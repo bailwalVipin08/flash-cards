@@ -21,17 +21,20 @@ public class Main {
                 String card = sc.nextLine();
                 System.out.printf("The definition of the card #%d: \n>", i+1);
                 String def = sc.nextLine();
+                boolean keyExists = cardToDefinition.containsKey(card);
 
-                if(cardToDefinition.isEmpty()){
-                    cardToDefinition.put(card,def);
-                    break;
-                }
-                else if(cardToDefinition.containsKey(card)) {
+                if(keyExists) {
                     System.out.println("Key already exists! Please enter a new Key");
+                    flag = true;
                 }
-                else{
-                    flag = false;
+                else {
+                    if (cardToDefinition.isEmpty() || !keyExists) {
+                        cardToDefinition.put(card, def);
+                        flag = false;
+                        break;
+                    }
                 }
+
             }
 
          }
