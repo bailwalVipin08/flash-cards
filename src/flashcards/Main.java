@@ -1,6 +1,6 @@
 package flashcards;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,26 +9,47 @@ public class Main {
         System.out.printf("Input number of cards: \n>");
         int numOfCards = Integer.parseInt(sc.nextLine());
 
-        String[] cards = new String[numOfCards];
-        String[] definitions = new String[numOfCards];
+        Map<String, String> cardToDefinition = new LinkedHashMap<>();
+        Map<String, String> definitionToCard = new LinkedHashMap<>();
+
         String answer = null;
 
         for(int i = 0; i < numOfCards ; i++){
-            System.out.printf("The card #%d: \n>", i+1);
-            cards[i] = sc.nextLine();
-            System.out.printf("The definition of the card #%d: \n>", i+1);
-            definitions[i] = sc.nextLine();
-        }
+            boolean flag = true;
+            while(flag){
+                System.out.printf("The card #%d: \n>", i+1);
+                String card = sc.nextLine();
+                System.out.printf("The definition of the card #%d: \n>", i+1);
+                String def = sc.nextLine();
 
-        for(int i = 0; i < numOfCards ; i++){
-            System.out.printf("Print the definition of \"%s\": \n>", cards[i]);
+                if(cardToDefinition.isEmpty()){
+                    cardToDefinition.put(card,def);
+                    break;
+                }
+                else if(cardToDefinition.containsKey(card)) {
+                    System.out.println("Key already exists! Please enter a new Key");
+                }
+                else{
+                    flag = false;
+                }
+            }
+
+         }
+
+        for(Map.Entry<String, String> cardDef :  cardToDefinition.entrySet()){
+            System.out.printf("Print the definition of \"%s\": \n>",cardDef.getKey());
             answer = sc.nextLine();
-            if(answer.equals(definitions[i])){
+            if(answer.equals(cardDef.getValue())){
                 System.out.println("Correct answer.");
             }
+            else if(definitionToCard.containsKey(answer)){
+                System.out.printf("Wrong answer. (The correct one is \"%s\", you've just written the definition of \"%s\".",cardDef.getValue(), definitionToCard.get(answer));
+            }
+
             else{
-                System.out.printf("Wrong answer. (The correct one is \"%s\".)", definitions[i]);
+                System.out.printf("Wrong answer. (The correct one is \"%s\".)",cardDef.getValue() );
             }
         }
-    }
-}
+    }// end of function main
+
+}//end of class Main
